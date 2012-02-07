@@ -7,13 +7,14 @@ aglInit()
         	  
 Gui, +Resize	  
 Gui, show, w640 h480 x000 y100
+Gui, Color, 0
 hRC := aglUseGui()
 hDC := wglGetCurrentDC()
 aglInitExt()	  
  
 OnExit, ExitSub	  
 g_resources := make_resources()
-        	  
+ glEnable(GL_TEXTURE_2D)       	  
  
 Gui, show, w640 h480, % "OpenGL v" aglGetVersion()
 . " - " glGetString(GL_RENDERER)
@@ -24,6 +25,8 @@ Loop
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
  
 glUseProgram(g_resources.program)
+MouseGetPos, x, y
+g_resources.fade_factor := y / 1000
 glUniform1f(g_resources.uniforms.fade_factor, g_resources.fade_factor)
  glActiveTexture(GL_TEXTURE0)
     glBindTexture(GL_TEXTURE_2D, g_resources.textures[1])
@@ -35,23 +38,33 @@ glUniform1f(g_resources.uniforms.fade_factor, g_resources.fade_factor)
          
 glBindBuffer(GL_ARRAY_BUFFER, g_resources.vertex_buffer)
     glVertexAttribPointer( g_resources.attributes.position  ; attribute 
-        , 2                               ; size 
+        , 4                               ; size 
         , GL_FLOAT                         ; type 
         , GL_FALSE                         ; normalized? 
-        , 8                ; stride 
+        , 16                ; stride 
         , 0 )                         ; array buffer offset 
-         
+           
     glEnableVertexAttribArray(g_resources.attributes.position)
-         
+           
  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_resources.element_buffer)
-        
+           
     glDrawElements(        GL_TRIANGLE_STRIP  ; mode 
         ,4                  ; count 
         ,GL_UNSIGNED_SHORT  ; type 
         ,0 )           ; element array buffer offset 
       		    
 glDisableVertexAttribArray(g_resources.attributes.position)
-  
+  glBegin(GL_QUADS)
+    glTexCoord2f(0, 1)
+    glTexCoord2f(0, 1)
+    glVertex2f(-0.5, 0.5)
+    glTexCoord2f(1, 1)
+    glVertex2f(0.5, 0.5)
+    glTexCoord2f(1, 0)
+    glVertex2f(0.5, -0.5)
+    glTexCoord2f(0, 0)
+    glVertex2f(-0.5, -0.5)
+    glEnd()
   SwapBuffers(hDC)
   sleep, 30
 }
@@ -60,6 +73,7 @@ return
 
 GuiSize:
 glViewport(0, 0, A_GuiWidth, A_GuiHeight)
+
 return
 
 GuiClose:
@@ -76,3 +90,5 @@ assertgl(){
 if x := glGetError()
 msgbox % "error: " x
 }
+
+!r::reload
