@@ -9,11 +9,11 @@ VarSetCapacity(g_element_buffer_data, 2 * 8, 0)
 		    
 a_vertex_data := [-1.0, -1.0, 1.0, -1.0, -1.0,  1.0, 1.0,  1.0 ]
 a_buffer_data := [0, 1, 2, 3]
-for v in a_vertex_data{
-NumPut(v, g_vertex_buffer_data, 4 * (A_Index - 1), GLfloat)
+for i, v in a_vertex_data{
+NumPut(v, g_vertex_buffer_data, 4 * (A_Index - 1), "float")
 }
-for e in a_buffer_data{
-NumPut(e, g_element_buffer_data, 2 * (A_Index - 1), GLushort)
+for i, e in a_buffer_data{
+NumPut(e, g_element_buffer_data, 2 * (A_Index - 1), "ushort")
 }
 
 g_resources := {fade_factor: 0.5}
@@ -36,7 +36,7 @@ u.textures := [ut1, ut2]
 aposition := glGetAttribLocation(program, "position")
 g_resources.attributes := {position: aposition}
 g_resources.uniforms := u
-listvars
-msgbox % "g_resources: " tostring(g_resources)	  
+  listvars
+  msgbox % "g_resources: " tostring(g_resources)	  
 return g_resources
 }      	       	
