@@ -1,8 +1,7 @@
 
 make_resources()
 {
-global GLfloat, GLushort, GL_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER
-, GL_TEXTURE_2D
+global 
 static g_vertex_buffer_data, g_element_buffer_data
 VarSetCapacity(g_vertex_buffer_data, 4 * 16, 0)
 VarSetCapacity(g_element_buffer_data, 2 * 4, 0)
@@ -21,9 +20,9 @@ NumPut(e, g_element_buffer_data, 2 * (A_Index - 1), "ushort")
 }			 
 			 
 g_resources := {fade_factor: 0.5}
-    g_resources.vertex_buffer := make_buffer(GL_ARRAY_BUFFER
+    g_resources.vertex_buffer := make_buffer(GL_ARRAY_BUFFER_ARB
 ,  &g_vertex_buffer_data, 4 * 16 )
-    g_resources.element_buffer := make_buffer(GL_ELEMENT_ARRAY_BUFFER
+    g_resources.element_buffer := make_buffer(GL_ELEMENT_ARRAY_BUFFER_ARB
 , &g_element_buffer_data, 2 * 4)
   
 tex := aglLoadTexImage2D(GL_TEXTURE_2D, "hello1.png")
