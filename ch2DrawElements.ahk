@@ -13,7 +13,7 @@ hDC := wglGetCurrentDC()
 aglInitExt()	  
  
 OnExit, ExitSub	  
-g_resources := make_resources()
+g_resources := make_resourcesElements()
  glEnable(GL_TEXTURE_2D)       	  
  
 Gui, show, w640 h480, % "OpenGL v" aglGetVersion()
@@ -36,31 +36,13 @@ glUniform1f(g_resources.uniforms.fade_factor, g_resources.fade_factor)
     glBindTexture(GL_TEXTURE_2D, g_resources.textures[2])
     glUniform1i(g_resources.uniforms.textures[2], 1)
          
-glBindBuffer(GL_ARRAY_BUFFER, g_resources.vertex_buffer)
-    glVertexAttribPointer( g_resources.attributes.position  ; attribute 
-        , 4                               ; size 
-        , GL_FLOAT                         ; type 
-        , GL_FALSE                         ; normalized? 
-        , 16                ; stride 
-        , 0 )                         ; array buffer offset 
-           
-    glEnableVertexAttribArray(g_resources.attributes.position)
-           
- glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_resources.element_buffer)
-           
-    glDrawElements(        GL_TRIANGLE_STRIP  ; mode 
-        ,4                  ; count 
-        ,GL_UNSIGNED_SHORT  ; type 
-        ,0 )           ; element array buffer offset 
-      		    
-glDisableVertexAttribArray(g_resources.attributes.position)
-  glBegin(GL_QUADS)
-    glVertex2f(-0.5, 0.5)
-    glVertex2f(0.5, 0.5)
-    glVertex2f(0.5, -0.5)
-    glVertex2f(-0.5, -0.5)
-    glEnd()
-  SwapBuffers(hDC)
+
+glEnableClientState(GL_VERTEX_ARRAY)
+glVertexPointer(4, GL_FLOAT, 0, g_resources.vertexPointer)
+glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_SHORT, g_resources.elementPointer)
+ 
+glDisableClientState(GL_VERTEX_ARRAY)
+SwapBuffers(hDC)
   sleep, 30
 }
 return
