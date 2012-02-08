@@ -1,5 +1,5 @@
 
-make_resources()
+make_resources2()
 {
 global GLfloat, GLushort, GL_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER
 , GL_TEXTURE_2D
@@ -35,7 +35,6 @@ ut2 := glGetUniformLocation(program, "textures[1]")
 u.textures := [ut1, ut2]
 g_resources.uniforms := u
 g_resources.vertexPointer := &g_vertex_buffer_data
-g_resources.elementPointer := &g_element_buffer_data
  ; listvars
  ; msgbox % "g_resources: " tostring(g_resources)	  
 return g_resources
